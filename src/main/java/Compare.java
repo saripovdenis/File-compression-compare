@@ -4,13 +4,15 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.String.format;
 
 public class Compare {
     static final int MAX_SIZE = 50 * 1024 * 1024;//bytes
 
-    public static String checkCompress(
+    public static String checkOne(
             String inputDir,
             String originalName,
             String outputDir,
@@ -43,36 +45,22 @@ public class Compare {
 
     }
 
+    public static void checkAll(String inputDir, String outputDir, List<String> files) throws Exception {
+        for (String f : files) {
+            for (TypeCompressor type : TypeCompressor.values()) {
+                System.out.println(checkOne(inputDir, f, outputDir, type));
+            }
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         String inputDir = "/Users/denissaripov/IdeaProjects/File_compression_compare/src/main/java/input";
         String outputDir = "/Users/denissaripov/IdeaProjects/File_compression_compare/src/main/java/output";
+        
+        List<String> files = new ArrayList<>();
 
-        System.out.println(checkCompress(inputDir, "winter.jpg",
-                outputDir, TypeCompressor.DEFLATE
-        ));
+        files.add("winter.jpg");
 
-        System.out.println(checkCompress(inputDir, "winter.jpg",
-                outputDir, TypeCompressor.LZMA
-        ));
-
-        System.out.println(checkCompress(inputDir, "winter.jpg",
-                outputDir, TypeCompressor.BZIP2
-        ));
-
-        System.out.println(checkCompress(inputDir, "winter.jpg",
-                outputDir, TypeCompressor.GZ
-        ));
-
-        System.out.println(checkCompress(inputDir, "winter.jpg",
-                outputDir, TypeCompressor.LZ4
-        ));
-
-        System.out.println(checkCompress(inputDir, "winter.jpg",
-                outputDir, TypeCompressor.SNAPPY
-        ));
-
-        System.out.println(checkCompress(inputDir, "winter.jpg",
-                outputDir, TypeCompressor.XZ
-        ));
+        checkAll(inputDir, outputDir, files);
     }
 }

@@ -1,4 +1,4 @@
-import compression.Compression;
+import compression.Compressor;
 import compression.TypeCompressor;
 import org.apache.commons.io.FilenameUtils;
 
@@ -12,7 +12,7 @@ import static java.lang.String.format;
 public class Compare {
     static final int MAX_SIZE = 50 * 1024 * 1024;//bytes
 
-    public static String checkOne(
+    public static String checkOneCompress(
             String inputDir,
             String originalName,
             String outputDir,
@@ -21,7 +21,7 @@ public class Compare {
         String extension = FilenameUtils.getExtension(originalName);
         String inputNoExtension = FilenameUtils.removeExtension(originalName);
         String compressedName = inputNoExtension + '.' + type.toString().toLowerCase();
-        Compression comp = new Compression(MAX_SIZE);
+        Compressor comp = new Compressor(MAX_SIZE);
 
         File original = new File(inputDir, originalName);
         File compressed = new File(outputDir, compressedName);
@@ -45,10 +45,10 @@ public class Compare {
 
     }
 
-    public static void checkAll(String inputDir, String outputDir, List<String> files) throws Exception {
+    public static void checkAllCompress(String inputDir, String outputDir, List<String> files) throws Exception {
         for (String f : files) {
             for (TypeCompressor type : TypeCompressor.values()) {
-                System.out.println(checkOne(inputDir, f, outputDir, type));
+                System.out.println(checkOneCompress(inputDir, f, outputDir, type));
             }
         }
     }
@@ -60,7 +60,16 @@ public class Compare {
         List<String> files = new ArrayList<>();
 
         files.add("winter.jpg");
+        files.add("city.jpg");
+        files.add("1");
+        files.add("arch.zip");
+        files.add("Vojna_i_mir.zip");
+        files.add("Vojna_i_mir.txt");
+        files.add("patrick.gif");
+        files.add("yung_lean.mp4");
+        files.add("Nick_Mira_sample.wav");
+        files.add("lil_peep.mp3");
 
-        checkAll(inputDir, outputDir, files);
+        checkAllCompress(inputDir, outputDir, files);
     }
 }
